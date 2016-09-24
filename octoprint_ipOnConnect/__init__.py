@@ -1,18 +1,10 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-### (Don't forget to remove me)
-# This is a basic skeleton for your plugin's __init__.py. You probably want to adjust the class name of your plugin
-# as well as the plugin mixins it's subclassing from. This is really just a basic skeleton to get you started,
-# defining your plugin as a template plugin, settings and asset plugin. Feel free to add or remove mixins
-# as necessary.
-#
-# Take a look at the documentation on what other plugin mixins are available.
-
 import octoprint.plugin
 import socket
 
-class ipOnConnectPlugin():
+class ipOnConnectPlugin(octoprint.plugin.OctoPrintPlugin):
 
 	def message_on_connect(comm, script_type, script_name, *args, **kwargs):
 		if not script_type == "gcode" or not script_name == "afterPrinterConnected":
@@ -20,7 +12,7 @@ class ipOnConnectPlugin():
 
 		ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
 		prefix = None
-		postfix = "M117 IP:" + ip
+		postfix = "M117 " + ip
 		return prefix, postfix
 
 	##~~ Softwareupdate hook
