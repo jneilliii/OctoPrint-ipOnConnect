@@ -6,7 +6,7 @@ import socket
 
 class ipOnConnectPlugin(octoprint.plugin.StartupPlugin):
 	def on_after_startup(self):
-        self._logger.info("ipOnConnectPlugin: " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
+		self._logger.info("ipOnConnectPlugin: " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
 
 	def message_on_connect(comm, script_type, script_name, *args, **kwargs):
 		if not script_type == "gcode" or not script_name == "afterPrinterConnected":
