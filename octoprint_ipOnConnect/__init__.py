@@ -12,9 +12,8 @@ class ipOnConnectPlugin(octoprint.plugin.StartupPlugin):
 		if not script_type == "gcode" or not script_name == "afterPrinterConnected":
 			return None
 
-		ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
 		prefix = None
-		postfix = "M117 " + ip
+		postfix = "M117 " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
 		return prefix, postfix
 
 	##~~ Softwareupdate hook
