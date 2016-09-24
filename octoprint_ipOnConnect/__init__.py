@@ -4,10 +4,11 @@ from __future__ import absolute_import
 import octoprint.plugin
 import socket
 
-class ipOnConnectPlugin(octoprint.plugin.StartupPlugin):
+class ipOnConnectPlugin(octoprint.plugin.StartupPlugin,octoprint.plugin.EventHandlerPlugin):
 	def on_after_startup(self):
 		self._logger.info("ipOnConnectPlugin: " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
-
+	
+	##-- Attempt at using comm.protocol.scripts hook --not working
 	def message_on_connect(comm, script_type, script_name, *args, **kwargs):
 		if not script_type == "gcode" or not script_name == "afterPrinterConnected":
 			return None
@@ -15,6 +16,11 @@ class ipOnConnectPlugin(octoprint.plugin.StartupPlugin):
 		prefix = None
 		postfix = "M117 " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
 		return prefix, postfix
+		
+	##-- EventHandler hook 
+	def on_event(self, event, payload):
+        if event == "Connected":
+            self._printer.command("M117 " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
 
 	##~~ Softwareupdate hook
 
