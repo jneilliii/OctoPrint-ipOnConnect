@@ -3,24 +3,42 @@ from __future__ import absolute_import
 
 import octoprint.plugin
 import socket
+import threading
 
-class ipOnConnectPlugin(octoprint.plugin.StartupPlugin,octoprint.plugin.EventHandlerPlugin):
-	def on_after_startup(self):
-		self._logger.info("ipOnConnectPlugin: " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
+class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
+						octoprint.plugin.StartupPlugin,
+						octoprint.plugin.EventHandlerPlugin,
+						octoprint.plugin.TemplatePlugin):
+						
+	##~~ SettingsPlugin mixin
 	
-	##-- Attempt at using comm.protocol.scripts hook --not working
-	def message_on_connect(comm, script_type, script_name, *args, **kwargs):
-		if not script_type == "gcode" or not script_name == "afterPrinterConnected":
-			return None
-
-		prefix = None
-		postfix = "M117 " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-		return prefix, postfix
+	def get_settings_defaults(self):
+		return dict(delay=0)
+						
+	##~~ StartupPlugin mixin
+	
+	def on_after_startup(self):	
+		t = threading.Timer(int(self._settings.get(["delay"])),self.get_ip_and_send)
+		t.start()
 		
-	##-- EventHandler hook 
+	##-- EventHandler mixin 
+	
 	def on_event(self, event, payload):
-		if event == "Connected":
-			self._printer.commands("M117 " + [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
+		if event == "Connected" or event == "ConnectivityChanged":
+			t = threading.Timer(int(self._settings.get(["delay"])),self.get_ip_and_send)
+			t.start()
+			
+	##~~ TemplatePlugin mixin
+
+	def get_template_configs(self):
+		return [dict(type='settings', custom_bindings=False, template='ipOnConnect_settings.jinja2')]
+
+	##~~ Utility functions
+	
+	def get_ip_and_send(self):
+		server_ip = [(s.connect((self._settings.global_get(["server","onlineCheck","host"]), self._settings.global_get(["server","onlineCheck","port"]))), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+		self._logger.info("ipOnConnectPlugin: " + server_ip)
+		self._printer.commands("M117 " + server_ip)
 
 	##~~ Softwareupdate hook
 
@@ -30,7 +48,7 @@ class ipOnConnectPlugin(octoprint.plugin.StartupPlugin,octoprint.plugin.EventHan
 		# for details.
 		return dict(
 			ipOnConnect=dict(
-				displayName="ipOnConnect Plugin",
+				displayName="ipOnConnect",
 				displayVersion=self._plugin_version,
 
 				# version check: github repository
@@ -44,7 +62,7 @@ class ipOnConnectPlugin(octoprint.plugin.StartupPlugin,octoprint.plugin.EventHan
 			)
 		)
 
-__plugin_name__ = "ipOnConnect Plugin"
+__plugin_name__ = "ipOnConnect"
 
 def __plugin_load__():
 	global __plugin_implementation__
@@ -52,7 +70,6 @@ def __plugin_load__():
 
 	global __plugin_hooks__
 	__plugin_hooks__ = {
-		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
-		"octoprint.comm.protocol.scripts": __plugin_implementation__.message_on_connect
+		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
 	}
 
