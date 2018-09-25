@@ -24,7 +24,7 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 	##-- EventHandler mixin 
 	
 	def on_event(self, event, payload):
-		if event == "Connected" or event == "ConnectivityChanged":
+		if event == "Connected" or event == "ConnectivityChanged" or event == "PrintDone" or event == "PrintFailed":
 			t = threading.Timer(int(self._settings.get(["delay"])),self.get_ip_and_send)
 			t.start()
 			
