@@ -13,6 +13,10 @@ or manually using this URL:
 	
 # Changelog
 
+## [0.2.1] - 2018-11-17
+### Added
+- New `Include Trailing Character` setting to account for some firmware that clips the last character of M117 commands (i.e. ANET E10).
+
 ## [0.2.0] - 2018-05-26
 ### Added
 - New delay option for checking ip and sending to control panel to resolve cold start issues.
@@ -31,6 +35,7 @@ I programmed this plugin for fun and do my best effort to support those that hav
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/jneilliii)
 
+[0.2.1]: https://github.com/jneilliii/OctoPrint-ipOnConnect/tree/0.2.1
 [0.2.0]: https://github.com/jneilliii/OctoPrint-ipOnConnect/tree/0.2.0
 [0.1.0]: https://github.com/jneilliii/OctoPrint-ipOnConnect/tree/0.1.0
 
