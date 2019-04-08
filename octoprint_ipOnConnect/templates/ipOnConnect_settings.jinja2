@@ -14,4 +14,18 @@
 			<label class="checkbox"><input type="checkbox" data-bind="checked: settings.plugins.ipOnConnect.addTrailingChar"/> Include Trailing Character</label>
 		</div>
 	</div>
+	<div class="control-group">
+		<div class="controls">
+			<label class="checkbox"><input type="checkbox" data-bind="checked: settings.plugins.ipOnConnect.useM70"/> Show message using M70</label>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="ipOnConnectDisplayTime">Display time</label>
+		<div class="controls">
+			<span class="input-append">
+				<input type="number" increment="1" class="input-mini" id="ipOnConnectDisplayTime" data-bind="value: settings.plugins.ipOnConnect.displayTime" />
+				<span class="add-on">sec</span>
+			</span>
+		</div>
+	</div>
 </form>
