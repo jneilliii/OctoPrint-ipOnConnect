@@ -45,6 +45,9 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 		else:
 			message = "M117 " + server_ip
 		self._printer.commands(message)
+		
+		message = "M300 S800 P200"
+		self._printer.commands(message)
 
 	##~~ Softwareupdate hook
 
