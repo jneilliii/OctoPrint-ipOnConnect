@@ -13,6 +13,10 @@ or manually using this URL:
 
 # Changelog
 
+## [0.2.3] - 2019-10-03
+### Added
+- Python 3 compatibility.
+
 ## [0.2.2] - 2019-04-08
 ### Added
 - Optional parameter in settings to enable the use of M70 command instead of M117 for Sailfish firmware thanks to @ohrn.
@@ -39,6 +43,7 @@ I programmed this plugin for fun and do my best effort to support those that hav
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/jneilliii)
 
+[0.2.3]: https://github.com/jneilliii/OctoPrint-ipOnConnect/tree/0.2.3
 [0.2.2]: https://github.com/jneilliii/OctoPrint-ipOnConnect/tree/0.2.2
 [0.2.1]: https://github.com/jneilliii/OctoPrint-ipOnConnect/tree/0.2.1
 [0.2.0]: https://github.com/jneilliii/OctoPrint-ipOnConnect/tree/0.2.0
