@@ -13,7 +13,7 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 	##~~ SettingsPlugin mixin
 	
 	def get_settings_defaults(self):
-		return dict(delay=0,showHostname=False)
+		return dict(delay=0,addTrailingChar=False,useM70=0,displayTime="10",showHostname=False)
 						
 	##~~ StartupPlugin mixin
 	
@@ -37,11 +37,16 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 	
 	def get_ip_and_send(self):
 		server_ip = [(s.connect((self._settings.global_get(["server","onlineCheck","host"]), self._settings.global_get(["server","onlineCheck","port"]))), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-		message = server_ip
 		if self._settings.get(["showHostname"]) == True:
-			message = socket.gethostname() + " " + server_ip
+			server_ip = socket.gethostname() + " " + server_ip
+		if self._settings.get(["addTrailingChar"]):
+			server_ip += "_"
+		if self._settings.get(["useM70"]):
+			message = "M70 P" + self._settings.get(["displayTime"]) + " (" + server_ip + ")"
+		else:
+			message = "M117 " + server_ip
+		self._printer.commands(message)
 		self._logger.info("ipOnConnectPlugin: " + message)
-		self._printer.commands("M117 " + message)
 
 	##~~ Softwareupdate hook
 
@@ -66,6 +71,7 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 		)
 
 __plugin_name__ = "ipOnConnect"
+__plugin_pythoncompat__ = ">=2.7,<4"
 
 def __plugin_load__():
 	global __plugin_implementation__
