@@ -13,7 +13,7 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 	##~~ SettingsPlugin mixin
 	
 	def get_settings_defaults(self):
-		return dict(delay=0,addTrailingChar=False,useM70=0,displayTime="10")
+		return dict(delay=0,addTrailingChar=False,useM70=0,displayTime="10",showHostname=False)
 						
 	##~~ StartupPlugin mixin
 	
@@ -24,7 +24,7 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 	##-- EventHandler mixin 
 	
 	def on_event(self, event, payload):
-		if event == "Connected" or event == "ConnectivityChanged":
+		if event == "Connected" or event == "ConnectivityChanged" or event == "PrintDone" or event == "PrintFailed":
 			t = threading.Timer(int(self._settings.get(["delay"])),self.get_ip_and_send)
 			t.start()
 			
@@ -37,7 +37,8 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 	
 	def get_ip_and_send(self):
 		server_ip = [(s.connect((self._settings.global_get(["server","onlineCheck","host"]), self._settings.global_get(["server","onlineCheck","port"]))), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-		self._logger.info("ipOnConnectPlugin: " + server_ip)
+		if self._settings.get(["showHostname"]) == True:
+			server_ip = socket.gethostname() + " " + server_ip
 		if self._settings.get(["addTrailingChar"]):
 			server_ip += "_"
 		if self._settings.get(["useM70"]):
@@ -45,6 +46,7 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 		else:
 			message = "M117 " + server_ip
 		self._printer.commands(message)
+		self._logger.info("ipOnConnectPlugin: " + message)
 
 	##~~ Softwareupdate hook
 
