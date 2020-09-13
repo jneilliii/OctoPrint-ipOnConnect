@@ -1,13 +1,30 @@
 <h4>ipOnConnect Settings</h4>
 <form class="form-horizontal" id="settings_plugin_ipOnConnect_form">
 	<div class="control-group">
+		<label class="control-label">{{ _('Printer URL:') }}</label>
+		<div class="controls">
+			<input type="text" class="input-block-level"
+				data-bind="value: settings.plugins.ipOnConnect.URL">
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<label class="checkbox"><input type="checkbox" data-bind="checked: settings.plugins.ipOnConnect.showURL"/> Show URL</label>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<label class="checkbox"><input type="checkbox" data-bind="checked: settings.plugins.ipOnConnect.showURLOnly"/> Show only URL - Hide IP and Hostname</label>
+		</div>
+	</div>
+	<div class="control-group">
 		<label class="control-label" for="ipOnConnectHostname">{{ _('Show Hostname') }}</label>
 		<div class="controls">
 			<span class="input-append">
 				<input type="checkbox" class="input-mini" id="ipOnConnectHostname" data-bind="checked: settings.plugins.ipOnConnect.showHostname" />
 			</span>
-        </div>
-    </div>
+		</div>
+	</div>
 	<div class="control-group">
 		<label class="control-label" for="ipOnConnectDelay">{{ _('Check Delay') }}</label>
 		<div class="controls">
@@ -15,8 +32,8 @@
 				<input type="number" increment="1" class="input-mini" id="ipOnConnectDelay" data-bind="value: settings.plugins.ipOnConnect.delay" />
 				<span class="add-on">sec</span>
 			</span>
-        </div>
-    </div>
+		</div>
+	</div>
 	<div class="control-group">
 		<div class="controls">
 			<label class="checkbox"><input type="checkbox" data-bind="checked: settings.plugins.ipOnConnect.addTrailingChar"/> Include Trailing Character</label>
