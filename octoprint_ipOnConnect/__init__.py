@@ -66,12 +66,12 @@ class ipOnConnectPlugin(octoprint.plugin.SettingsPlugin,
 
 				# version check: github repository
 				type="github_release",
-				user="jneilliii",
+				user="R3velation",
 				repo="OctoPrint-ipOnConnect",
 				current=self._plugin_version,
 
 				# update method: pip
-				pip="https://github.com/jneilliii/OctoPrint-ipOnConnect/archive/{target_version}.zip"
+				pip="https://github.com/R3velation/OctoPrint-ipOnConnect/archive/{target_version}.zip"
 			)
 		)
 
