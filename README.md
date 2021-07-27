@@ -59,7 +59,7 @@ If you experience issues with this plugin or need assistance please use the issu
 - [Will O](https://github.com/4wrxb)
 
 ### Support Jneilliii's Efforts
-Jneilliii programmed this plugin for fun and do their best effort to support those that have issues with it, please return the favor and leave them a tip or become a Patron if you find this plugin helpful and want them to continue future development.
+Jneilliii programmed this plugin for fun and does their best effort to support those that have issues with it, please return the favor and leave them a tip or become a Patron if you find this plugin helpful and want them to continue future development.
 
 [![Patreon](patreon-with-text-new.png)](https://www.patreon.com/jneilliii) [![paypal](paypal-with-text.png)](https://paypal.me/jneilliii)
 
