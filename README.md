@@ -12,6 +12,10 @@ or manually using this URL:
     https://github.com/R3velation/OctoPrint-ipOnConnect/archive/master.zip
 
 # Changelog
+## [0.2.4] - 2021-07-27
+### Forked
+### Added
+- Support for URL based access.
 
 ## [0.2.3] - 2019-10-03
 ### Added
